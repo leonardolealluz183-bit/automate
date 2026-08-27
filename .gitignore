@@ -1,0 +1,10 @@
+.gradle/
+.gradle-bootstrap/
+.kotlin/
+.idea/
+**/build/
+local.properties
+*.iml
+*.jks
+*.keystore
+tools/stock_home.txt
