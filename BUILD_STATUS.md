@@ -1,4 +1,64 @@
-# Estado da retomada — 27/08/2026
+# MirrorCounter R860 — APK verificado em 27/08/2026
+
+## Estado atual — prevalece sobre o histórico abaixo
+
+**APK debug gerado e verificado pelo GitHub Actions.**
+
+- Repositório público autorizado: `leonardolealluz183-bit/automate`.
+- Branch: `mirrorcounter-r860`; `main` permanece intacta.
+- Commit compilado: `8cedb148e4c307a62d3a797c50ca2b70a49149df`.
+- [Build aprovado](https://github.com/leonardolealluz183-bit/automate/actions/runs/33125514387).
+- Artifact: `MirrorCounter-R860-debug`, ID `9668234878`.
+- APK: `MirrorCounter-R860-debug.apk`, 8.063.932 bytes.
+- Pacote: `com.riftking.mirrorcounter`; versão `2.0-r860-appliance` (2).
+- minSdk 30; targetSdk 36.
+
+SHA-256 do APK:
+`3dd4479faed167f8ff7daf37d644789dc52806e05cd3affcf93e6e4092098b58`
+
+### Correção confirmada no CI
+
+A [primeira execução](https://github.com/leonardolealluz183-bit/automate/actions/runs/33125381102)
+falhou porque Kotlin 2.3.21 rejeita a configuração antiga
+`android.kotlinOptions.jvmTarget = "17"`. Ela foi migrada para
+`kotlin.compilerOptions` com `JvmTarget.JVM_17`, conforme a
+[documentação Kotlin](https://kotlinlang.org/docs/gradle-compiler-options.html).
+Java 17 e as versões de AGP/Kotlin/SDK/dependências foram mantidos.
+
+Código do app, recursos, manifest e scripts ADB permanecem idênticos aos
+originais. Não houve mudança de UX, gestos, vibração ou estratégia de bateria.
+
+### Verificações concluídas
+
+- `assembleDebug`: sucesso.
+- `lintDebug`: sucesso, **0 erros e 13 avisos**; avisos não silenciados.
+- `apksigner verify --verbose`: sucesso, assinatura APK v2, um assinante.
+- Os dois artifacts baixados correspondem aos SHA-256 retornados pelo GitHub.
+- SHA-256 do APK local corresponde ao checksum produzido no runner.
+- ZIP/APK íntegros; manifest, DEX e resources presentes.
+- Metadata aapt: pacote/versão corretos, requisito de relógio e biblioteca
+  `com.google.android.wearable`; sem permissão INTERNET.
+- Comparação byte a byte dos nove arquivos originais de app/recursos/ADB: OK.
+
+Os avisos incluem atualizações de dependências, orientação/recents,
+alocações durante desenho e acessibilidade. Não foi alterado comportamento
+do app para eliminá-los.
+
+### Próximo passo e limites
+
+Não houve teste no relógio/emulador nem medição de bateria. Instalar normalmente
+no Watch4 pelo S23 Ultra via ADB wireless e verificar placares, gestos,
+persistência, saída de emergência e Ambient Mode antes de mudar HOME/debloat.
+Os scripts setup/lockdown não foram executados.
+
+O APK é debug-signed para sideload. Builds futuros em outro runner podem usar
+outra chave debug: não desinstalar uma versão com placares salvos sem registrar
+os valores antes. A configuração de assinatura persistente fica para uma etapa
+posterior, sem publicar chaves privadas no repositório.
+
+---
+
+# Histórico da preparação — informações abaixo são anteriores ao build aprovado
 
 ## Resultado da preparação inicial (antes do envio ao GitHub)
 

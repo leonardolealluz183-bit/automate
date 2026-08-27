@@ -82,7 +82,16 @@ sem necessidade de usar o restante do Wear OS durante as partidas.
 
 Leia também `BUILD_STATUS.md` antes de continuar. O workflow e o wrapper oficial
 foram preparados e verificados estaticamente. O aplicativo permaneceu intacto.
-**Ainda não há APK nem build completo aprovado neste commit inicial.**
+**APK gerado e verificado em 27/08/2026.**
 O usuário autorizou usar o repositório público `leonardolealluz183-bit/automate`,
 na branch separada `mirrorcounter-r860`, para executar o GitHub Actions.
 A branch `main` deve permanecer intacta.
+
+Build aprovado: https://github.com/leonardolealluz183-bit/automate/actions/runs/33125514387
+
+Commit do APK: `8cedb148e4c307a62d3a797c50ca2b70a49149df`.
+O erro de `kotlinOptions.jvmTarget` foi corrigido com `compilerOptions` tipado,
+mantendo Java 17. Compilação, lint (0 erros/13 avisos), assinatura e checksum
+foram verificados. O app ainda não foi testado no relógio; o próximo passo é
+instalar normalmente e testar antes de mudar HOME ou executar lockdown.
+Consulte `BUILD_STATUS.md` para a evidência completa e o hash do APK.
