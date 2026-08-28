@@ -1,10 +1,56 @@
-# Atualização 2.1 — 28/08/2026
+# Versão 2.1 verificada — 28/08/2026
 
-Código e testes preparados; aguardando execução do GitHub Actions.
-Nenhum resultado da versão 2.0 abaixo valida a versão 2.1.
-O usuário confirmou funcionamento da versão 2.0 no relógio, mas relatou tela
-apagando e solicitou os ajustes documentados no README/WORK_HANDOFF.
-A configuração dos sensores do sistema permanece pendente de inspeção no Watch4.
+## Resultado atual (prevalece sobre o histórico abaixo)
+
+- GitHub Actions: **sucesso**.
+- Run: https://github.com/leonardolealluz183-bit/automate/actions/runs/33128864410
+- Commit do APK: `7192461ebdb9e1e38fbdd7028cd3775eae1b868f`.
+- Branch: `mirrorcounter-r860`; main não alterada.
+- APK: `MirrorCounter-R860-debug.apk`, 8,073,772 bytes.
+- Pacote: `com.riftking.mirrorcounter`; versão `2.1-r860-tabletop` (3).
+- SHA-256: `49d5f1566ca710d34588407879ff0f54fab3aa917c86b48892f4836ecbcddef6`.
+- Artifact APK: `9669509007`; lint: `9669509528`; testes: `9669510013`.
+
+## Verificações
+
+- `assembleDebug`, `lintDebug`, `testDebugUnitTest`: sucesso.
+- 26 testes executados (13 cenários nas APIs 30 e 35): 0 falhas, 0 erros,
+  0 ignorados. Incluem uma hora **simulada** sem expiração da tela,
+  escurecimento, primeiro toque, cores e toques rápidos, limites, rotação,
+  resets, cancelamento de gesto, persistência, saída e lifecycle.
+- Robolectric substitui somente a ponte Ambient fornecida pelo hardware Wear.
+  Não é teste real de firmware Samsung, tela, som, motor de vibração ou bateria.
+- Lint: 0 erros / 10 avisos. Sem ocultar avisos de orientação/recents/API.
+- Assinatura APK v2 verificada por apksigner no runner; um assinante.
+- Três ZIPs baixados conferidos com os SHA-256 publicados pelo GitHub.
+- APK íntegro e checksum local igual ao produzido pelo runner.
+- Metadata: minSdk 30, targetSdk 36, apenas WAKE_LOCK, VIBRATE e permissão
+  interna AndroidX de receiver; sem INTERNET, microfone ou sensores de saúde.
+
+## Atualização: certificado diferente CONFIRMADO
+
+Certificado v2 anterior:
+`d7cef32eb3d7beea517d93f41616ccf9f3b8c4b2fa1a2a4f36c93b346f688d70`
+
+Certificado v2 desta versão:
+`de3a4faa8c018ce82598ba55533a7d599014440b4effe1c64dc033fa56be6630`
+
+Não é possível atualizar diretamente o APK anterior com esta assinatura.
+Registrar os placares antes de desinstalar o app antigo. A desinstalação apaga
+os dados; instalar o novo e repor os placares manualmente. Nenhuma operação de
+remoção foi feita remotamente. Não publicar chave privada no repositório.
+
+## Teste físico e sensores pendentes
+
+O usuário confirmou funcionamento da versão 2.0. A 2.1 ainda precisa ser
+instalada e testada por vários minutos sem toque, fora do carregador e na mesa.
+O bloqueio de timeout pelo app não certifica políticas específicas do firmware.
+Brilho mínimo, feedback e autonomia precisam de confirmação no Watch4.
+
+**Sensores do sistema NÃO foram desligados.** O app não os utiliza; a etapa
+seguinte é inspecionar as opções do desenvolvedor/serviços reais do relógio e
+aplicar o bloqueio disponível, preservando toque, áudio, vibração e proteções.
+Nenhum setup/lockdown foi executado. Consulte SENSORS_AND_BATTERY.md.
 
 ---
 

@@ -122,3 +122,13 @@ Não tocar em proteções de bateria/temperatura nem nos drivers essenciais.
 
 Assinatura: o CI ainda utiliza debug key do runner. Verificar compatibilidade
 na atualização; registrar placares antes de eventual desinstalação. Main intacta.
+
+### Resultado verificado da atualização 2.1
+
+Build 33128864410 aprovado no commit 7192461ebdb9e1e38fbdd7028cd3775eae1b868f.
+26 testes passaram, lint 0 erros/10 avisos, APK v2 assinado e hashes conferidos.
+Certificado diferente do APK 2.0 confirmado: registrar os placares antes de
+remover a versão antiga para instalar esta. Teste físico novo e bloqueio de
+sensores ainda pendentes; não declarar que sensores estão desligados.
+O usuário reforçou que precisa de tela visível o tempo inteiro, não apenas 1 min.
+Não há timer de encerramento: KEEP_SCREEN_ON permanece durante a sessão visível.
