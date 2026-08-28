@@ -1,66 +1,73 @@
-# Mirror Counter — SM-R860 Appliance Build
+# MirrorCounter — Watch4 SM-R860
 
-Purpose-built for Samsung Galaxy Watch4 **SM-R860 (40 mm Bluetooth, 396×396)** as a dedicated two-player score counter.
+Marcador de dois jogadores para uso na mesa. O placar superior fica girado em
+180°. Fundo preto, dois números e uma divisória discreta quando ativo.
 
-## Build with GitHub Actions
+## Versão 2.1 — mudança autorizada em 28/08/2026
 
-The repository root must contain `settings.gradle.kts`, `app/`, `gradlew`,
-`gradle/wrapper/` and `.github/workflows/build.yml` (not the project ZIP).
-The workflow runs on pushes, pull requests and manual dispatch, using Ubuntu,
-Temurin JDK 17, Gradle 8.13, Android SDK 36 and Build Tools 35.0.0.
+- Sem os símbolos +/−; as áreas de toque permanecem iguais.
+- Número verde ao somar e vermelho ao reduzir, durante 200 ms. Efeitos
+  independentes por jogador, sem animação contínua.
+- Vibração de 70 ms (amplitude máxima quando suportada); 120 ms ao zerar.
+- Bip de 45 ms; 70 ms ao zerar. Respeita perfil silencioso/vibração e volume
+  de sistema do relógio. Não altera o volume global.
+- Tela mantida ligada **somente com o app em primeiro plano**.
+- Brilho fixo da janela: 35% ativo, 5% após 8 segundos sem interação.
+  Esses valores são parâmetros do Android, não medidas físicas de luminância.
+- No estado escurecido, só os números ficam visíveis. Um toque clareia a tela
+  e já marca o ponto ao soltar. Os números se deslocam até 3 pixels, uma vez
+  por minuto, para reduzir o risco de burn-in; não é garantia contra burn-in.
+- Ao sair para Configurações ou outro app, libera tela/brilho, cancela callbacks
+  e libera áudio. Não cria serviço em segundo plano nem wakelock próprio.
 
-It runs `./gradlew assembleDebug`, Android lint and APK signature verification.
-After a successful run, download the `MirrorCounter-R860-debug` artifact from
-Actions. It contains `MirrorCounter-R860-debug.apk`, its SHA-256 checksum,
-package metadata and the source commit/run identifiers.
+**O estado escurecido é uma tela interativa com brilho baixo, não o Ambient
+Mode de baixo consumo do hardware.** Mantê-la ligada custa mais bateria.
+A autonomia e a legibilidade precisam ser medidas no Watch4 real. A API de
+Ambient permanece como fallback caso o sistema imponha esse estado.
 
-The APK is debug-signed for sideloading; it is not a Play Store release.
-A fresh CI runner may use a different debug signing key, so do not assume that
-future APKs can replace an installed one without resolving signing continuity.
-Do not uninstall an existing counter without first recording its scores.
+## Controles preservados
 
-Local build, with JDK 17 and the Android SDK installed:
+Na orientação de cada jogador:
+
+- Área esquerda (primeiro terço): −1.
+- Número/área direita: +1.
+- Segurar o número por 900 ms e soltar: zerar aquele jogador.
+- Segurar a divisória central por 1 segundo e soltar: zerar os dois.
+- Sete toques rápidos no centro: Configurações do sistema.
+- Placares 0–99, salvos localmente e restaurados ao reabrir.
+
+## Sensores e bateria
+
+O MirrorCounter não solicita nem registra sensores de saúde, movimento,
+luminosidade, GPS, microfone ou câmera. Não usa rede. Som e vibração são saídas.
+A permissão WAKE_LOCK vem da integração Ambient; o app não adquire um lock próprio.
+
+Isso **não desliga sensores que o Wear OS/Samsung ou outros apps utilizam**.
+Veja [SENSORS_AND_BATTERY.md](SENSORS_AND_BATTERY.md) para a configuração e os
+limites verificáveis. Nenhuma alteração foi aplicada remotamente no relógio.
+Não executar debloat amplo como substituto de confirmar o estado dos sensores.
+
+## Compilar e testar
+
+GitHub Actions na branch `mirrorcounter-r860`, mantendo `main` intacta.
+JDK 17, Gradle 8.13, AGP 8.13.2, Kotlin 2.3.21, compile/target SDK 36, min SDK 30.
 
 ```sh
-./gradlew assembleDebug lintDebug --no-daemon --stacktrace
+./gradlew assembleDebug lintDebug testDebugUnitTest --no-daemon --stacktrace
 ```
 
-Before changing HOME or running any setup/lockdown script, install and launch
-the app normally and verify controls, persistence, ambient mode and the hidden
-Settings exit on the real watch. No device configuration has been changed by
-the build preparation. See `BUILD_STATUS.md` for the actual validation status.
+Os testes Robolectric usam APIs 30 e 35; não substituem teste físico nem medição
+energética. O workflow verifica assinatura e publica APK/checksum/metadados,
+lint e relatório dos testes. Consulte BUILD_STATUS.md para a execução verificada.
 
-## What is different from the first build
+## Atualização no relógio
 
-- No Compose UI: one native custom `View`, no animation loop, no network code.
-- No `FLAG_KEEP_SCREEN_ON`.
-- Implements Wear OS `AmbientLifecycleObserver` so the system can enter low-power Ambient/AOD mode.
-- Ambient mode draws only two dim gray scores on pure black OLED background.
-- `+`, `−`, divider and nonessential pixels disappear in Ambient mode.
-- Tiny periodic score-position shift reduces burn-in risk.
-- Top score is rotated 180° for the opponent.
-- Saves scores locally.
-- Can be selected as the Android HOME activity, making the watch behave like a dedicated counter.
-- Back is ignored while the counter is active.
-- Hidden recovery path: seven rapid taps on the center divider opens system Settings.
+O package continua `com.riftking.mirrorcounter`, versão 2.1 (versionCode 3).
+O APK é debug-signed e um novo runner pode usar chave diferente. Se a instalação
+recusar atualizar por assinatura incompatível, anote os dois placares antes de
+qualquer desinstalação; desinstalar apaga os dados. Não é necessário refazer o
+pareamento ADB se a conexão já funciona.
 
-## Controls
-
-For each player's orientation:
-- left region: −1
-- score/right region: +1
-- long press the score: reset that player
-- long press center divider: reset both
-- 7 quick taps center divider: open Android Settings
-
-## Battery strategy
-
-The app intentionally lets Wear OS transition out of the interactive display into Ambient/AOD. In Ambient mode only the scores remain, with all other pixels black. This is the main battery-saving mechanism; background app removal is secondary.
-
-For an always-visible score, enable Always-On Display. For maximum battery life, disable AOD and wake the display only when checking/updating the score.
-
-## Dedicated-device setup
-
-See `tools/README_ADB.txt`. `setup_r860.ps1` makes the counter the HOME target and applies low-overhead settings. `lockdown_r860.ps1` can reversibly disable a conservative list of nonessential apps. It deliberately uses `pm disable-user`, never `pm uninstall`.
-
-`restore_r860.ps1` re-enables those packages and restores the HOME component saved during setup.
+Os scripts antigos de setup/lockdown ainda são opcionais: alteram HOME/apps e
+não foram executados nesta etapa. O modo de tela da versão 2.1 não precisa do
+setup antigo nem de AOD ligado para evitar o timeout normal do app.

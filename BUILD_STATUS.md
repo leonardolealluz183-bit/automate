@@ -1,3 +1,13 @@
+# Atualização 2.1 — 28/08/2026
+
+Código e testes preparados; aguardando execução do GitHub Actions.
+Nenhum resultado da versão 2.0 abaixo valida a versão 2.1.
+O usuário confirmou funcionamento da versão 2.0 no relógio, mas relatou tela
+apagando e solicitou os ajustes documentados no README/WORK_HANDOFF.
+A configuração dos sensores do sistema permanece pendente de inspeção no Watch4.
+
+---
+
 # MirrorCounter R860 — APK verificado em 27/08/2026
 
 ## Estado atual — prevalece sobre o histórico abaixo
